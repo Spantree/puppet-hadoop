@@ -1,0 +1,8 @@
+forge 'http://forge.puppetlabs.com'
+
+mod 'spantree/java7', '0.2.2'
+mod 'wget' , :git => 'https://github.com/bechampion/puppet-wget'
+mod 'nutch' , :git => 'https://github.com/bechampion/puppet-nutch'
+mod 'elasticsearch/elasticsearch', '0.3.0'
+mod 'gini/gradle', '0.2.0'
+mod 'puppetlabs/concat' , '1.0.2'

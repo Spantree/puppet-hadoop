@@ -1,0 +1,40 @@
+$testdir="/nutch"
+$nutchver = "2.2.1"
+$nutchbranch="src"
+$nutchapp = "apache-nutch"
+##change the length of tittle to be indexed
+augeas { "build.xml":
+	incl    => "${testdir}/${nutchapp}-${nutchver}/src/plugin/build-plugin.xml",
+		lens    => "Xml.lns",
+		changes => [
+			"ins taskdef after project/target[last()]",
+			"set project/taskdef[last()]/#attribute/name 'groovyc'",
+			"set project/taskdef[last()][#attribute/name='groovyc']/#attribute/classname 'org.codehaus.groovy.ant.Groovyc'",
+			"set project/taskdef[last()][#attribute/name='groovyc']/classpath/#attribute/refid 'classpath'",
+			"ins target after project/taskdef[last()]",
+			"set project/target[last()]/#attribute/name 'groovyCompile'",
+			"set project/target[last()][#attribute/name='groovyCompile']/echo/#attribute/message 'Compiling groovy classes in plugin: \${name}'",
+			"set project/target[last()][#attribute/name='groovyCompile']/groovyc/#attribute/srcdir '\${src.dir}'",
+			"set project/target[last()][#attribute/name='groovyCompile']/groovyc/#attribute/includes '**/*.groovy'",
+			"set project/target[last()][#attribute/name='groovyCompile']/groovyc/#attribute/destdir '\${build.classes}'",
+			"set project/target[last()][#attribute/name='groovyCompile']/groovyc/classpath/#attribute/refid 'classpath'",
+			"set project/target[*][#attribute/name='compile']/#attribute/depends 'init,deps-jar, resolve-default,groovyCompile'",
+
+		],
+
+
+}
+#<target name="compile" depends="init,deps-jar, resolve-default,groovyCompile">
+#<taskdef name="groovyc"
+# classname="org.codehaus.groovy.ant.Groovyc">
+#    <classpath refid="classpath"/>
+#  </taskdef>
+#<target name="groovyCompile">
+#   <echo message="Compiling groovy classes in plugin: ${name}"/>
+#   <groovyc
+#     srcdir="${src.dir}"
+#     includes="**/*.groovy"
+#     destdir="${build.classes}">
+#      <classpath refid="classpath"/>
+#   </groovyc>
+#  </target>
