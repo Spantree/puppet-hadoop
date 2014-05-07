@@ -1,6 +1,13 @@
 node /[d,h,m,n][n,b][0-9]/{
   include java7
   Exec { path => ['/usr', '/usr/bin', '/usr/local/bin', '/usr/local/sbin', '/usr/sbin', '/sbin', '/bin'] }
+
+  augeas { "ssh_config":
+    changes => [
+      "set /files/etc/ssh/ssh_config/StrictHostKeyChecking 'no'",
+    ],
+  }
+
   ##key or everything should go to hiera
   file {"/tmp/puppetwasher":
     ensure => "created",
@@ -84,7 +91,7 @@ node /[d,h,m,n][n,b][0-9]/{
     require => Wget::Download["hadoop"]
   }
   ######
-  $slaves_data = hiera("hosts_data",false)
+  $slaves_data = hiera("slaves_data",false)
   file { 'hostfile':
     path => "/etc/hosts",
     content => template("/usr/local/src/chicago-news-crawler/puppet/templates/hosts.erb")

@@ -11,15 +11,22 @@ slaves=yml['slaves_data']
 p slaves
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  slaves.select {|key,value| value[3] == 1}.each do |key, value|
+  slaves.select {|key,value| value['state'] == 1}.each do |key, value|
+
+    #inital stuff
+    hostname = "#{key}.#{value['domain']}"
+    ipaddress = value['addr']
+    cpu = value['cpu']
+    mem = value['mem']
+    #
+
     config.vm.define key  do |key|
       key.vm.box = "ubuntu/trusty64"
-      key.vm.network :private_network, ip: value[0]
-      key.vm.hostname = value[1]
+      key.vm.network :private_network, ip: ipaddress
+      key.vm.hostname = hostname
       key.vm.provider :virtualbox do |v, override|
-        v.gui = true
-        v.customize ["modifyvm", :id, "--memory", 1024]
-        v.customize ["modifyvm", :id, "--cpus", 2]
+        v.customize ["modifyvm", :id, "--memory", mem]
+        v.customize ["modifyvm", :id, "--cpus", cpu]
         override.vm.network :private_network, ip: "192.168.244.100"
       end
       key.vm.synced_folder ".", "/usr/local/src/#{PROJECT_NAME}", :create => 'true'

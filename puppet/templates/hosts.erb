@@ -1,3 +1,4 @@
-<% @slaves_data.each_pair do |name, ipaddress| %>
-<%="#{ipaddress} #{name}"%>
+<%= "127.0.0.1 localhost" %>
+<% @slaves_data.each_pair do |key, val| %>
+  <%="#{val['addr']} #{key}.#{val['domain']} #{val['alias']}"%>
 <% end %>
