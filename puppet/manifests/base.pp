@@ -4,7 +4,7 @@ node /[d,h,m,n][n,b][0-9]/{
 
   augeas { "ssh_config":
     changes => [
-      "set /files/etc/ssh/ssh_config/StrictHostKeyChecking 'no'",
+      "set /files/etc/ssh/ssh_config/Host/StrictHostKeyChecking 'no'",
     ],
   }
 
