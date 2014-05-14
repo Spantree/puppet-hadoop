@@ -32,7 +32,8 @@ slaves: |
   nn1
   dn1
 slaves_data:
-  #localhost: 127.0.0.
   nn1: {addr: 192.168.190.101, alias: nn1, type: NameNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
   dn1: {addr: 192.168.190.111, alias: dn1, type: DataNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
   dn2: {addr: 192.168.190.112, alias: dn2, type: DataNode, domain: *domain, state: 0, mem: 1024, cpu: 1}
+  hb1: {addr: 192.168.190.121, alias: hb1, type: HbaseNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
+

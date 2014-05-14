@@ -14,7 +14,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   slaves.select {|key,value| value['state'] == 1}.each do |key, value|
 
     #inital stuff
-    hostname = "#{key}.#{value['domain']}"
+    #hostname = "#{key}.#{value['domain']}"
+    hostname = key
     ipaddress = value['addr']
     cpu = value['cpu']
     mem = value['mem']
