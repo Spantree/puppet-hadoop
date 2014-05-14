@@ -43,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           "host_environment" => "Vagrant",
           "vm_type" => "vagrant",
           "build_apps" => true,
-          "hostname" => "mn1.dev.spantree.net"
+          "hostname" => hostname 
         }
         key.options = [
           '--trace',
