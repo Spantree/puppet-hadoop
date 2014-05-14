@@ -36,4 +36,5 @@ slaves_data:
   dn1: {addr: 192.168.190.111, alias: dn1, type: DataNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
   dn2: {addr: 192.168.190.112, alias: dn2, type: DataNode, domain: *domain, state: 0, mem: 1024, cpu: 1}
   hb1: {addr: 192.168.190.121, alias: hb1, type: HbaseNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
+  dev1: {addr: 192.168.190.121, alias: hb1, type: "NameNode,HbaseNode", domain: *domain, state: 1, mem: 1024, cpu: 1}
 

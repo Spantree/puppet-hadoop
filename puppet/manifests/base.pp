@@ -21,7 +21,8 @@ case $slaves_data[$hostname]["type"] {
   "HbaseNode": { 
   class {'hbase':} 
   class { 'ssh' : type => 'pub'} 
-  "DataNode,HbaseNode": {
+  }
+  "NameNode,HbaseNode": {
   class {'hbase':} 
   class {'hadoop':} 
   class { 'ssh' : type => 'priv'} 
