@@ -35,7 +35,7 @@ class hbase {
     lens    => "Xml.lns",
     changes => [
       "set configuration/property[1]/name/#text 'hbase.rootdir'",
-      "set configuration/property[1]/value/#text 'hdfs://nn1:9000/hbase'",
+      "set configuration/property[1]/value/#text 'hdfs://${hostname}:9000/hbase'",
       "set configuration/property[2]/name/#text 'hbase.cluster.distributed'",
       "set configuration/property[2]/value/#text 'true'",
     ],

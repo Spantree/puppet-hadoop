@@ -1,7 +1,7 @@
 class hadoop {
   include java7
   Exec { path => ['/usr', '/usr/bin', '/usr/local/bin', '/usr/local/sbin', '/usr/sbin', '/sbin', '/bin','/usr/local/hadoop-1.2.1/bin/','/usr/local/hadoop-1.2.1/sbin/'] }
-  if $slaves_data[$hostname]["type"] =~ /^(NameNode|DataNode)$/ {
+  if $slaves_data[$hostname]["type"] =~ /^(NameNode|DataNode)/ {
     file { "/hdfs":
       ensure => "directory",
       mode   => 777,
@@ -26,7 +26,7 @@ class hadoop {
       lens    => "Xml.lns",
       changes => [
         "set configuration/property[1]/name/#text 'mapred.job.tracker'",
-        "set configuration/property[1]/value/#text 'nn1:9001'",
+        "set configuration/property[1]/value/#text '${hostname}:9001'",
       ],
       require => Wget::Download["hadoop"]
     }
@@ -38,7 +38,7 @@ class hadoop {
         "set configuration/property[1]/value/#text '/tmp'",
         "set configuration/property[1]/description/#text 'tmp folder for data'",
         "set configuration/property[2]/name/#text 'fs.default.name'",
-        "set configuration/property[2]/value/#text 'hdfs://nn1:9000'",
+        "set configuration/property[2]/value/#text 'hdfs://${hostname}:9000'",
         "set configuration/property[2]/description/#text 'hdfsurl'",
       ],
       require => Wget::Download["hadoop"]
@@ -60,7 +60,7 @@ class hadoop {
     ######
 
     }
-    if $slaves_data[$hostname]["type"] == "NameNode"{
+    if $slaves_data[$hostname]["type"] =~ /NameNode/ {
       $slaves = hiera('slaves',false)
       file {'slaves':
         content => $slaves,
