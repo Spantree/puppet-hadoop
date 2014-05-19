@@ -29,11 +29,12 @@ id_rsa: |
 id_rsa_pub: "AAAAB3NzaC1yc2EAAAADAQABAAABAQDNSW4qbpk7KXL0izm0IvpfSzA+TufVs+MvKrIDYYrHthVCp9TAgWl9feco1dWgHVzK7dPasRbEa9fn2RtF01sV3an+TEUVkCwBolvbn+JpJ/yc1xQfiSNHgFsOZsfVInzUilLguhzGhXtuwzalcIedWQ66PTtvAcf8yUs8SMnZEkDk8TyCk72mvqR8uLSvx93nFuLCxvRPIDT3Lh2EG5I9cHqaXilrIuY+tbXMgFOJ6W34TS/X2jpRnuHmqfLIl6htKs74RyWydhhCx3H7uZjU060dBrzfdRuG7oRIC54LG/5hekPq64CXbvhy5CGIL56fOSQCdt6ICV7WZ7zxCIbn" 
 domain: &domain "spantree.net"
 slaves: |
-  mn1
+  nn1
   dn1
-  dn2
 slaves_data:
-  #localhost: 127.0.0.
   nn1: {addr: 192.168.190.101, alias: nn1, type: NameNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
   dn1: {addr: 192.168.190.111, alias: dn1, type: DataNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
   dn2: {addr: 192.168.190.112, alias: dn2, type: DataNode, domain: *domain, state: 0, mem: 1024, cpu: 1}
+  hb1: {addr: 192.168.190.121, alias: hb1, type: HbaseNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
+  dev1: {addr: 192.168.190.121, alias: hb1, type: "NameNode,HbaseNode", domain: *domain, state: 1, mem: 1024, cpu: 1}
+
