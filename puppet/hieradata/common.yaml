@@ -28,13 +28,15 @@ id_rsa: |
   -----END RSA PRIVATE KEY-----
 id_rsa_pub: "AAAAB3NzaC1yc2EAAAADAQABAAABAQDNSW4qbpk7KXL0izm0IvpfSzA+TufVs+MvKrIDYYrHthVCp9TAgWl9feco1dWgHVzK7dPasRbEa9fn2RtF01sV3an+TEUVkCwBolvbn+JpJ/yc1xQfiSNHgFsOZsfVInzUilLguhzGhXtuwzalcIedWQ66PTtvAcf8yUs8SMnZEkDk8TyCk72mvqR8uLSvx93nFuLCxvRPIDT3Lh2EG5I9cHqaXilrIuY+tbXMgFOJ6W34TS/X2jpRnuHmqfLIl6htKs74RyWydhhCx3H7uZjU060dBrzfdRuG7oRIC54LG/5hekPq64CXbvhy5CGIL56fOSQCdt6ICV7WZ7zxCIbn" 
 domain: &domain "spantree.net"
+awsdata: {secgroup: "sg-603ffa05", subnet: "subnet-4690d56e"}
+awsami: &awsami "ami-82fa58eb"
 slaves: |
   nn1
   dn1
 slaves_data:
-  nn1: {addr: 192.168.190.101, alias: nn1, type: NameNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
-  dn1: {addr: 192.168.190.111, alias: dn1, type: DataNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
-  dn2: {addr: 192.168.190.112, alias: dn2, type: DataNode, domain: *domain, state: 0, mem: 1024, cpu: 1}
-  hb1: {addr: 192.168.190.121, alias: hb1, type: HbaseNode, domain: *domain, state: 1, mem: 1024, cpu: 1}
-  dev1: {addr: 192.168.190.121, alias: hb1, type: "NameNode,HbaseNode", domain: *domain, state: 1, mem: 1024, cpu: 1}
+  nn1: {addr: 10.0.0.111, alias: nn1, type: NameNode, domain: *domain, state: 1, mem: 1024, cpu: 1, ami: *awsami, shape: m3.medium }
+  dn1: {addr: 192.168.190.111, alias: dn1, type: DataNode, domain: *domain, state: 1, mem: 1024, cpu: 1, ami: *awsami, shape: m3.medium }
+  dn2: {addr: 192.168.190.112, alias: dn2, type: DataNode, domain: *domain, state: 0, mem: 1024, cpu: 1, ami: *awsami, shape: m3.medium } 
+  hb1: {addr: 192.168.190.121, alias: hb1, type: HbaseNode, domain: *domain, state: 1, mem: 1024, cpu: 1, ami: *awsami, shape: m3.medium } 
+  dev1: {addr: 192.168.190.121, alias: hb1, type: "NameNode,HbaseNode,DnsNode", domain: *domain, state: 1, mem: 1024, cpu: 1, ami: *awsami, shape: m3.medium }
 

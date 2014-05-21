@@ -4,17 +4,31 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 PROJECT_NAME = "chicago-news-crawler"
-### attempt #1
 require 'yaml'
 yml = YAML.load_file("puppet/hieradata/common.yaml")
+secyml = YAML.load_file("puppet/hieradata/secrets.yaml")
+
 slaves=yml['slaves_data']
 p slaves
+nodes=yml['nodes']
+
+awsdata=yml['awsdata']
+#creds
+awscreds=secyml['awscreds']
+aws_key = awscreds['key']
+aws_secret = awscreds['secret']
+aws_pair = awscreds['pair']
+#projectname=yml['projectname']
+#net settings
+aws_secgroup = awsdata['secgroup']
+aws_subnet = awsdata['subnet']
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   slaves.select {|key,value| value['state'] == 1}.each do |key, value|
 
     #inital stuff
-    #hostname = "#{key}.#{value['domain']}"
+    ami = value['ami']
+    shape = value['shape']
     hostname = key
     ipaddress = value['addr']
     cpu = value['cpu']
@@ -30,6 +44,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.customize ["modifyvm", :id, "--cpus", cpu]
         override.vm.network :private_network, ip: "192.168.244.100"
       end
+      key.vm.provider :aws do |aws, override|
+        aws.access_key_id = aws_key
+        aws.secret_access_key = aws_secret
+        aws.keypair_name = aws_pair
+        aws.ami = ami
+        aws.instance_type = shape
+        aws.tags["Name"] = hostname
+        aws.security_groups = [aws_secgroup]
+        aws.subnet_id = aws_subnet
+        aws.private_ip_address = ipaddress
+        aws.elastic_ip= true
+        override.ssh.username = "ubuntu"
+        override.ssh.private_key_path ="~/Downloads/elasticsearch.pem"
+        override.vm.box = "dummy"
+      end 
+
       key.vm.synced_folder ".", "/usr/local/src/#{PROJECT_NAME}", :create => 'true'
       key.vm.synced_folder "puppet", "/usr/local/etc/puppet", :create => 'true'
       key.vm.provision :shell, :path => 'shell/initial-setup.sh', :args => '/vagrant/shell'

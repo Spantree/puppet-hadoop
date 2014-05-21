@@ -5,4 +5,5 @@
     :datadir: '/usr/local/etc/puppet/hieradata'
 :hierarchy:
     - common
+    - secrets
 :logger: console
